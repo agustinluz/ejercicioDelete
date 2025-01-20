@@ -1,0 +1,7 @@
+{
+  "name": "ejercicioDelete",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
