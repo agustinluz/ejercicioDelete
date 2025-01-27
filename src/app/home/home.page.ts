@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApiServiceProvider } from '../providers/api-service';
 import { Alumno } from '../modelo/Alumno';
 import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { SearchModalPage } from '../search-modal/search-modal.page';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -21,9 +24,12 @@ export class HomePage implements OnInit {
 
   constructor(private apiService: ApiServiceProvider,
 
-    public alertController: AlertController) {
+    public alertController: AlertController,
+    private modalCtrl: ModalController,
+     private http: HttpClient) {
 
   }
+  
   totalAlumno(): void {
 
     this.apiService.getAlumnos()
@@ -380,6 +386,63 @@ export class HomePage implements OnInit {
     });
 
     await alert.present();
+}
+async abrirModalBusqueda() {
+
+  const modal = await this.modalCtrl.create({
+
+    component: SearchModalPage,
+
+  });
+
+
+
+  await modal.present();
+
+
+
+  // Recoge los datos al cerrar el modal
+
+  const { data } = await modal.onDidDismiss();
+
+  if (data) {
+
+    const { firstName, lastName } = data;
+
+
+
+    // Llama al servicio para buscar los alumnos
+
+    this.buscarAlumnos(firstName, lastName);
+
+  }
+
+}
+
+
+
+// Llama al servicio para buscar alumnos
+
+buscarAlumnos(nombre: string, apellido: string) {
+
+  this.apiService
+
+    .buscarAlumnosPorNombreApellido(nombre, apellido)
+
+    .then((resultados) => {
+
+      this.alumnos = resultados; // Almacena los resultados en la lista
+
+      console.log('Resultados encontrados:', this.alumnos);
+
+    })
+
+    .catch((error) => {
+
+      console.error('Error al buscar alumnos:', error);
+
+    });
+
 }
 
 

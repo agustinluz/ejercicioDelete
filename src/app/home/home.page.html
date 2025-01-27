@@ -3,6 +3,17 @@
     <ion-title>
       Alumnos
     </ion-title>
+    <ion-buttons slot="end">
+
+      <ion-button (click)="abrirModalBusqueda()">
+ 
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+ 
+      </ion-button>
+      
+ 
+    </ion-buttons>
+    
     <ion-button expand="full" (click)="eliminarTodosLosAlumnos()" color="danger">
       Eliminar todos los alumnos
     </ion-button>
