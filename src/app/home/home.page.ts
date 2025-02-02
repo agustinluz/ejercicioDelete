@@ -28,69 +28,37 @@ export class HomePage implements OnInit {
     private modalCtrl: ModalController,
      private http: HttpClient) {
 
-  }
-  
-  totalAlumno(): void {
+  }  
 
+  ngOnInit(): void {
+    this.loadAlumnos();
+    this.totalAlumno();
+  }
+
+  totalAlumno(): void {
     this.apiService.getAlumnos()
- 
       .then( (alumnos:Alumno[])=> {
- 
           this.totalAlumnos=alumnos;
- 
       })
- 
       .catch( (error:string) => {
- 
           console.log(error);
- 
       });
  
   }
  
- 
+  loadAlumnos() {
+    this.apiService.getAlumnos().then((data) => {
+      this.alumnos = data;
+    });
+  }
 
- 
-   
- 
-   
- 
-      loadAlumnos(): void {
- 
-        this.apiService.getAlumnosPaginados((this.currentPage-1)*10, ((this.currentPage-1)*10) + this.pageSize)
- 
-          .then((alumnos: Alumno[]) => {
- 
-            this.alumnos = alumnos; // Sobrescribe en la primera página
- 
-            console.log(this.alumnos);
- 
-          })
- 
-          .catch((error: string) => {
- 
-            console.log(error);
- 
-          });
- 
-      }
- 
-   
- 
-   
- 
+  desfiltrar() {
+    this.loadAlumnos();
+  }
       goToFirstPage(): void {
- 
         this.currentPage = 1;
- 
         this.loadAlumnos();
- 
-      }
- 
-   
- 
-   
- 
+      } 
       goToPreviousPage(): void {
  
         if (this.currentPage > 1) {
@@ -102,39 +70,16 @@ export class HomePage implements OnInit {
         }
  
       }
- 
-   
- 
-   
- 
       goToNextPage(): void {
- 
         this.currentPage++;
- 
         this.loadAlumnos();
- 
       }
- 
-   
- 
-   
- 
       goToLastPage(): void {
- 
-        // Puedes implementar una llamada adicional para determinar la cantidad total de páginas.
- 
         console.log(this.totalAlumnos.length);
- 
         console.log(this.pageSize);
- 
         this.currentPage = Math.ceil( this.totalAlumnos.length / this.pageSize );
- 
         this.loadAlumnos();
- 
       }
- 
- 
-
 
   /*
   
@@ -143,198 +88,100 @@ export class HomePage implements OnInit {
   esto lo ponemos después del método eliminar alumno
   
   */
-
   async modificarAlumno(indice: number) {
-
     let alumno = this.alumnos[indice];
-
     const alert = await this.alertController.create({
-
       header: 'Modificar',
-
       inputs: [
-
         {
-
           name: 'first_name',
-
           type: 'text',
-
           value: alumno.first_name,
-
           placeholder: 'first_name'
-
         },
-
         {
-
           name: 'last_name',
-
           type: 'text',
-
           id: 'last_name',
-
           value: alumno.last_name,
-
           placeholder: 'last_name'
-
         },
-
         {
-
           name: 'email',
-
           id: 'email',
-
           type: 'text',
-
           value: alumno.email,
-
           placeholder: 'email'
-
         },
-
         {
-
           name: 'gender',
-
           id: 'gender',
-
           type: 'text',
-
           value: alumno.gender,
-
           placeholder: 'gender'
-
         },
-
         {
-
           name: 'avatar',
-
           value: alumno.avatar,
-
           type: 'url',
-
           placeholder: 'avatar'
-
         },
-
         {
-
           name: 'address',
-
           value: alumno.address,
-
           type: 'text',
-
           placeholder: 'address'
-
         },
-
         {
-
           name: 'city',
-
           value: alumno.city,
-
           type: 'text',
-
           placeholder: 'city'
-
         },
-
         {
-
           name: 'postalCode',
-
           value: alumno.postalCode,
-
           type: 'text',
-
           placeholder: 'postalCode'
-
         }
-
       ],
-
       buttons: [
-
         {
-
           text: 'Cancel',
-
           role: 'cancel',
-
           cssClass: 'secondary',
-
           handler: () => {
-
             console.log('Confirm Cancel');
-
           }
-
         }, {
-
           text: 'Ok',
-
           handler: (data) => {
-
             console.log(data);
-
             var alumnoModificado: Alumno = new Alumno(
-
               alumno.id,
-
               data['gender'],
-
               data['first_name'],
-
               data['last_name'],
-
               data['email'],
-
               data['avatar'],
-
               data['address'],
-
               data['city'],
-
               data['postalCode']);
-
             this.apiService.modificarAlumno(alumnoModificado)
-
               .then((alumno: Alumno) => {
-
                 this.alumnos[indice] = alumno;
-
               })
-
               .catch((error: string) => {
-
                 console.log(error);
-
               });
-
             console.log('Confirm Ok');
-
           }
-
         }
-
       ]
-
     });
-
     await alert.present();
-
   }//end_modificarAlumno
-  ngOnInit(): void {
-    this.loadAlumnos();
- 
-    this.totalAlumno();
-    
-  }
+
 
   /*
   
@@ -407,13 +254,13 @@ async abrirModalBusqueda() {
 
   if (data) {
 
-    const { firstName, lastName } = data;
+    const { firstName, lastName , city } = data;
 
 
 
     // Llama al servicio para buscar los alumnos
 
-    this.buscarAlumnos(firstName, lastName);
+    this.buscarAlumnos(firstName, lastName, city);
 
   }
 
@@ -423,24 +270,16 @@ async abrirModalBusqueda() {
 
 // Llama al servicio para buscar alumnos
 
-buscarAlumnos(nombre: string, apellido: string) {
+buscarAlumnos(nombre: string, apellido: string, ciudad:string) {
 
   this.apiService
-
-    .buscarAlumnosPorNombreApellido(nombre, apellido)
-
+    .buscarAlumnosPorNombreApellido(nombre, apellido,ciudad)
     .then((resultados) => {
-
       this.alumnos = resultados; // Almacena los resultados en la lista
-
       console.log('Resultados encontrados:', this.alumnos);
-
     })
-
     .catch((error) => {
-
       console.error('Error al buscar alumnos:', error);
-
     });
 
 }

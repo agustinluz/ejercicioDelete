@@ -24,10 +24,10 @@
     },
     {
       "id": "6",
+      "gender": "Female",
       "first_name": "Zorina",
       "last_name": "Staniforth",
       "email": "zstaniforth5@blog.com",
-      "gender": "Female",
       "avatar": "https://robohash.org/inutipsa.png?size=50x50&set=set1",
       "address": "2 Jenna Center",
       "city": "Kurayoshi",

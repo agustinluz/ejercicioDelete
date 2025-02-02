@@ -143,37 +143,28 @@ modificarAlumno(nuevosDatosAlumno: Alumno): Promise<Alumno> {
     return promise;
 }//end_modificar_alumno
 
-buscarAlumnosPorNombreApellido(nombre: string, apellido: string): Promise<Alumno[]> {
-
+// src/app/providers/api-service.ts
+buscarAlumnosPorNombreApellido(nombre: string, apellido: string, ciudad: string): Promise<Alumno[]> {
     return new Promise<Alumno[]>((resolve, reject) => {
-
-        this.http.get(`${this.URL}/alumnos?first_name=${nombre}&last_name=${apellido}`).toPromise()
-
-            .then((data: any) => {
-
-                let alumnos = new Array<Alumno>();
-
-                data.forEach((alumno: Alumno) => {
-
-                    alumnos.push(alumno);
-
-                });
-
-                resolve(alumnos);
-
-            })
-
-            .catch((error: Error) => {
-
-                reject(error.message);
-
-            });
-
+      this.http.get(`${this.URL}/alumnos`).toPromise()
+        .then((data: any) => {
+          let alumnos = new Array<Alumno>();
+          data.forEach((alumno: Alumno) => {
+            if (
+              (nombre && alumno.first_name.toLowerCase().includes(nombre.toLowerCase())) ||
+              (apellido && alumno.last_name.toLowerCase().includes(apellido.toLowerCase())) ||
+              (ciudad && alumno.city.toLowerCase().includes(ciudad.toLowerCase()))
+            ) {
+              alumnos.push(alumno);
+            }
+          });
+          resolve(alumnos);
+        })
+        .catch((error: Error) => {
+          reject(error.message);
+        });
     });
-
-}
-
-
+  }
 
 
 }//end_class
