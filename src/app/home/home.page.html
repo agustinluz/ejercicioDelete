@@ -1,118 +1,53 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Alumnos
+      <a href="https://www.iesjulioverne.es/"><img src="assets/icon/favicon.png" alt="Logo"
+          style="height: 40px; vertical-align: middle;"></a>
     </ion-title>
     <ion-buttons slot="end">
-
       <ion-button (click)="abrirModalBusqueda()">
- 
         <ion-icon slot="icon-only" name="search"></ion-icon>
- 
       </ion-button>
-
-      <!-- src/app/home/home.page.html -->
-      <ion-button expand="block" (click)="desfiltrar()">Desfiltrar</ion-button>
-      
- 
+      <ion-button (click)="desfiltrar()">Desfiltrar</ion-button>
+      <ion-button (click)="eliminarTodosLosAlumnos()" color="danger">
+        Eliminar todos los alumnos
+      </ion-button>
     </ion-buttons>
-    
-    <ion-button expand="full" (click)="eliminarTodosLosAlumnos()" color="danger">
-      Eliminar todos los alumnos
-    </ion-button>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  
 
-  <ion-card *ngFor="let alumno of alumnos; let indice=index;">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="8">{{alumno.last_name}}, {{alumno.first_name}}</ion-col>
-        <ion-col size="1"></ion-col>
-        <ion-col size="1">
-          <button ion-button icon-only (click)="modificarAlumno(indice)" danger>
-            <ion-icon name="create-outline"></ion-icon>
-          </button>
-        </ion-col>
-        <ion-col size="1">
-          <button ion-button icon-only (click)="eliminarAlumno(indice)" danger>
-            <ion-icon name="trash-outline"></ion-icon>
-          </button>
-        </ion-col>
-        <ion-col size="1"></ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card>
- 
- 
- <ion-content>
- 
-  <ion-card *ngFor="let alumno of alumnos; let indice = index;">
- 
-    <ion-grid>
- 
-      <ion-row>
- 
-        <ion-col size="8">{{alumno.last_name}}, {{alumno.first_name}}</ion-col>
- 
-        <ion-col size=1></ion-col>
- 
-        <ion-col size=1>
- 
-          <button ion-button icon-only (click)="modificarAlumno(indice)" danger>
- 
-            <ion-icon name="create-outline"></ion-icon>
- 
-          </button>
- 
-        </ion-col>
- 
-        <ion-col size="1">
- 
-          <button ion-button icon-only (click)="eliminarAlumno(indice)" danger>
- 
-            <ion-icon name="trash"></ion-icon>
- 
-          </button>
- 
-        </ion-col>
- 
-        <ion-col size="1"></ion-col>
- 
-      </ion-row>
- 
-    </ion-grid>
- 
-  </ion-card>
- 
- 
- 
-  <ion-footer>
- 
-    <ion-toolbar>
- 
-      <ion-buttons slot="start">
- 
-        <ion-button (click)="goToFirstPage()">Primera</ion-button>
- 
-        <ion-button (click)="goToPreviousPage()">Anterior</ion-button>
- 
-      </ion-buttons>
- 
-      <ion-title>Página {{currentPage}}</ion-title>
- 
-      <ion-buttons slot="end">
- 
-        <ion-button (click)="goToNextPage()">Siguiente</ion-button>
- 
-        <ion-button (click)="goToLastPage()">Última</ion-button>
- 
-      </ion-buttons>
- 
-    </ion-toolbar>
- 
-  </ion-footer>
- 
- </ion-content>
+  <ion-content>
+    <ion-card *ngFor="let alumno of alumnos; let indice = index;">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="8">{{alumno.last_name}}, {{alumno.first_name}}</ion-col>
+          <ion-col size=1></ion-col>
+          <ion-col size=1>
+            <button ion-button icon-only (click)="modificarAlumno(indice)" danger>
+              <ion-icon name="create-outline"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col size="1">
+            <button ion-button icon-only (click)="eliminarAlumno(indice)" danger>
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col size="1"></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="goToFirstPage()">Primera</ion-button>
+          <ion-button (click)="goToPreviousPage()">Anterior</ion-button>
+        </ion-buttons>
+        <ion-title>Página {{currentPage}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="goToNextPage()">Siguiente</ion-button>
+          <ion-button (click)="goToLastPage()">Última</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-content>
