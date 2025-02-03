@@ -106,4 +106,20 @@ buscarAlumnosPorNombreApellido(nombre: string, apellido: string, ciudad: string)
         });
     });
   }
+  insertarAlumno(alumno: Alumno): Promise<Boolean> {
+
+    return new Promise<Boolean>((resolve, reject) => {
+       this.http.post(this.URL + "/alumnos", alumno).toPromise().then(
+         (data: any) => {
+           console.log(data);
+           resolve(true);
+         })
+         .catch((error: Error) => {
+           console.log(error.message);
+           reject(error.message);
+         });
+    });
+      }
+
+      
 }
