@@ -210,7 +210,6 @@ buscarAlumnos(nombre: string, apellido: string, ciudad: string) {
   this.apiService.buscarAlumnosPorNombreApellido(nombre, apellido, ciudad).then((data) => {
     this.alumnos = data;
     this.currentPage = 1;
-
   });
 }
 }
