@@ -212,4 +212,68 @@ buscarAlumnos(nombre: string, apellido: string, ciudad: string) {
     this.currentPage = 1;
   });
 }
+
+async insertarAlumno() {
+  const alert = await this.alertController.create({
+     header: 'Insertar Alumno',
+     inputs: [
+       {
+         name: 'first_name',
+         type: 'text',
+         placeholder: 'Nombre'
+       },
+       {
+         name: 'last_name',
+         type: 'text',
+         placeholder: 'Apellido'
+       },
+       {
+         name: 'email',
+         type: 'text',
+         placeholder: 'Email'
+       },
+       {
+        name: 'city',
+        type: 'text',
+        placeholder: 'Ciudad'
+      }
+
+     ],
+     buttons: [
+       {
+         text: 'Cancelar',
+         role: 'cancel',
+         handler: () => {
+           console.log('Cancelado');
+         }
+       },
+       {
+         text: 'Insertar',
+         handler: (data) => {
+           const nuevoAlumno: Alumno = {
+             id: Math.floor(Math.random() * 10000), // Genera un ID aleatorio
+             first_name: data.first_name,
+             last_name: data.last_name,
+             email: data.email,
+             gender: '',
+             avatar: '',
+             address: '',
+             city: '',
+             postalCode: ''
+           };
+  
+           this.apiService.insertarAlumno(nuevoAlumno)
+             .then(() => {
+               console.log("Alumno insertado correctamente");
+               this.alumnos.push(nuevoAlumno);
+             })
+             .catch((error) => {
+               console.log("Error al insertar: " + error);
+             });
+         }
+       }
+     ]
+  });
+  await alert.present();
+    }
 }
