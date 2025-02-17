@@ -5,6 +5,16 @@ import { AlertController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { SearchModalPage } from '../search-modal/search-modal.page';
 import { HttpClient } from '@angular/common/http';
+import { AbstractControl, FormBuilder, FormControl, 
+  FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { NavigationExtras } from '@angular/router';
+import {  NavController, ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
+enum StorageTypeEnum {
+  JSON_SERVER = 'JSON_SERVER',
+  FIREBASE = 'FIREBASE'
+ }
+
 
 @Component({
   selector: 'app-home',
@@ -19,12 +29,14 @@ export class HomePage implements OnInit {
   public pageSize = 10;
   public totalAlumnos= new Array<Alumno>();
   public hasMorePages = true;
+  storageType: string = StorageTypeEnum.JSON_SERVER;
 
   constructor(private apiService: ApiServiceProvider,
-
     public alertController: AlertController,
     private modalCtrl: ModalController,
-     private http: HttpClient) {
+     private http: HttpClient,
+     private storage: Storage, 
+     private toastController: ToastController) {
 
   }  
 
@@ -41,6 +53,14 @@ export class HomePage implements OnInit {
     });
   }
 
+  totalAlumno(): void {
+    this.apiService.getAlumnos()
+      .then( (alumnos:Alumno[])=> {
+          this.totalAlumnos=alumnos;
+      })
+      .catch( (error:string) => {
+          console.log(error);
+      });}
   desfiltrar() {
     this.currentPage = 1;
     this.loadAlumnos();
